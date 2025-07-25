@@ -1,56 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Priyanshu Bej | Ultimate Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Dynamic Resume</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="loader-wrapper">
-  <svg class="loader" viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="45"></circle>
-  </svg>
-</div>
+    <div id="tsparticles"></div>
 
-<div class="cursor"></div>
+    <header class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Your Name</h1>
+            <p class="hero-subtitle">A Passionate [Your Profession] with a flair for Dynamic Web Experiences</p>
+            <a href="#contact" class="btn contact-btn">Let's Connect!</a>
+        </div>
+    </header>
 
-<header class="hero glass animate-fade-up">
-  <h1>Priyanshu Bej</h1>
-  <p>Creative Full Stack Developer</p>
-</header>
+    <nav class="main-nav">
+        <ul class="container">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-<section class="timeline animate-slide-in">
-  <h2>Timeline</h2>
-  <ul>
-    <li><strong>2020:</strong> Matriculation - St. Xavier's</li>
-    <li><strong>2022:</strong> Intermediate - St. Mary English HS</li>
-    <li><strong>2026:</strong> B.Tech CSE - ITER (Expected)</li>
-  </ul>
-</section>
+    <main>
+        <section id="about" class="container section-padding">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <img src="https://via.placeholder.com/150" alt="Your Photo" class="profile-pic">
+                <p>Hello! I'm [Your Name], a [Your Profession] based in [Your City, e.g., Jamshedpur]. I specialize in creating engaging and performant web applications with a focus on user experience and dynamic interfaces. My passion lies in bringing ideas to life through clean code and creative design. I'm always eager to learn new technologies and take on challenging projects that push the boundaries of web development.</p>
+                <p>In my free time, I enjoy [Your hobbies, e.g., reading, playing guitar, exploring nature].</p>
+            </div>
+        </section>
 
-<section class="projects animate-zoom-in">
-  <h2>Projects</h2>
-  <div class="card glass">📱 Calculator App</div>
-  <div class="card glass">🧠 Quiz Platform</div>
-  <div class="card glass">🚀 Docker Deployments</div>
-</section>
+        <section id="skills" class="container section-padding">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-item" data-skill="HTML5 & CSS3">
+                    <i class="fab fa-html5"></i>
+                    <span>HTML5 & CSS3</span>
+                </div>
+                <div class="skill-item" data-skill="JavaScript (ES6+)">
+                    <i class="fab fa-js-square"></i>
+                    <span>JavaScript (ES6+)</span>
+                </div>
+                <div class="skill-item" data-skill="React.js">
+                    <i class="fab fa-react"></i>
+                    <span>React.js</span>
+                </div>
+                <div class="skill-item" data-skill="Node.js">
+                    <i class="fab fa-node-js"></i>
+                    <span>Node.js</span>
+                </div>
+                <div class="skill-item" data-skill="GSAP">
+                    <img src="https://greensock.com/gsap/images/gsap-logo-small.svg" alt="GSAP" class="skill-icon">
+                    <span>GSAP</span>
+                </div>
+                <div class="skill-item" data-skill="Git & GitHub">
+                    <i class="fab fa-git-alt"></i>
+                    <span>Git & GitHub</span>
+                </div>
+                </div>
+        </section>
 
-<section class="contact animate-slide-in">
-  <h2>Contact</h2>
-  <form action="https://formsubmit.co/priyanshubej289@gmail.com" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required />
-    <input type="email" name="email" placeholder="Your Email" required />
-    <textarea name="message" placeholder="Your Message" required></textarea>
-    <button type="submit">Send</button>
-  </form>
-</section>
+        <section id="experience" class="container section-padding">
+            <h2>Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>[Job Title] at [Company Name]</h3>
+                    <p class="duration">[Start Date] – [End Date]</p>
+                    <ul>
+                        <li>Developed and maintained responsive web applications using [technologies].</li>
+                        <li>Collaborated with a team of [number] developers on [project details].</li>
+                        <li>Implemented dynamic user interfaces with [specific techniques/libraries].</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <h3>[Job Title] at [Previous Company]</h3>
+                    <p class="duration">[Start Date] – [End Date]</p>
+                    <ul>
+                        <li>[Responsibility 1]</li>
+                        <li>[Responsibility 2]</li>
+                    </ul>
+                </div>
+                </div>
+        </section>
 
-<footer class="footer glass">
-  <p>© 2025 Priyanshu Bej</p>
-</footer>
+        <section id="portfolio" class="container section-padding">
+            <h2>Portfolio</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <img src="https://via.placeholder.com/300x200" alt="Project 1">
+                    <h3>Project Name 1</h3>
+                    <p>A brief description of Project 1, highlighting technologies used (e.g., React, GSAP).</p>
+                    <a href="#" target="_blank" class="project-link">View Project</a>
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://via.placeholder.com/300x200" alt="Project 2">
+                    <h3>Project Name 2</h3>
+                    <p>Description of Project 2, focusing on dynamic elements or complex features.</p>
+                    <a href="#" target="_blank" class="project-link">View Project</a>
+                </div>
+                </div>
+        </section>
 
-<script src="script.js"></script>
+        <section id="contact" class="container section-padding">
+            <h2>Contact Me</h2>
+            <p>I'm always open to new opportunities and collaborations. Feel free to reach out!</p>
+            <form action="YOUR_FORM_SUBMISSION_ENDPOINT" method="POST" class="contact-form">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                <button type="submit" class="btn submit-btn">Send Message</button>
+            </form>
+            <div class="social-links">
+                <a href="https://linkedin.com/in/yourprofile" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://github.com/yourprofile" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="mailto:youremail@example.com"><i class="fas fa-envelope"></i> Email</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Your Name. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
