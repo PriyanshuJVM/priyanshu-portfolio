@@ -1,53 +1,56 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Priyanshu Bej | Dynamic Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Priyanshu Bej | Ultimate Portfolio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="hero">
-    <h1 class="animate-fade-up">Priyanshu Bej</h1>
-    <p class="animate-fade-up">Creative Software Developer</p>
-  </header>
 
-  <section class="about animate-slide-in">
-    <h2>About Me</h2>
-    <p>I build full-stack solutions with beautiful UIs and efficient backends. I love working with new tech and bringing ideas to life through code.</p>
-  </section>
+<div class="loader-wrapper">
+  <svg class="loader" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45"></circle>
+  </svg>
+</div>
 
-  <section class="skills animate-zoom-in">
-    <h2>Skills</h2>
-    <ul>
-      <li>JavaScript / React / Node.js</li>
-      <li>Python / Java / C++</li>
-      <li>Docker / Git / SQL</li>
-    </ul>
-  </section>
+<div class="cursor"></div>
 
-  <section class="projects animate-fade-up">
-    <h2>Projects</h2>
-    <div class="card">📱 Calculator App</div>
-    <div class="card">🧠 Quiz Platform</div>
-    <div class="card">📦 Docker-based Deployments</div>
-  </section>
+<header class="hero glass animate-fade-up">
+  <h1>Priyanshu Bej</h1>
+  <p>Creative Full Stack Developer</p>
+</header>
 
-  <section class="contact animate-slide-in">
-    <h2>Contact</h2>
-    <form action="https://formsubmit.co/priyanshubej289@gmail.com" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <textarea name="message" placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
+<section class="timeline animate-slide-in">
+  <h2>Timeline</h2>
+  <ul>
+    <li><strong>2020:</strong> Matriculation - St. Xavier's</li>
+    <li><strong>2022:</strong> Intermediate - St. Mary English HS</li>
+    <li><strong>2026:</strong> B.Tech CSE - ITER (Expected)</li>
+  </ul>
+</section>
 
-  <footer class="footer">
-    <p>© 2025 Priyanshu Bej</p>
-  </footer>
+<section class="projects animate-zoom-in">
+  <h2>Projects</h2>
+  <div class="card glass">📱 Calculator App</div>
+  <div class="card glass">🧠 Quiz Platform</div>
+  <div class="card glass">🚀 Docker Deployments</div>
+</section>
 
-  <script src="script.js"></script>
+<section class="contact animate-slide-in">
+  <h2>Contact</h2>
+  <form action="https://formsubmit.co/priyanshubej289@gmail.com" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="email" placeholder="Your Email" required />
+    <textarea name="message" placeholder="Your Message" required></textarea>
+    <button type="submit">Send</button>
+  </form>
+</section>
+
+<footer class="footer glass">
+  <p>© 2025 Priyanshu Bej</p>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
