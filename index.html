@@ -3,141 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Dynamic Resume</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Your Name - Advanced Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0;
+        }
+        .dark {
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .light {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+        .three-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .error-message {
+            display: none;
+            color: #ff4d4d;
+            text-align: center;
+            padding: 1rem;
+        }
+    </style>
 </head>
-<body>
+<body className="dark">
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useEffect, useRef, useState } = React;
 
-    <div id="tsparticles"></div>
+        // Theme Context for Dark/Light Mode
+        const ThemeContext = React.createContext();
 
-    <header class="hero-section">
-        <div class="container">
-            <h1 class="hero-title">Your Name</h1>
-            <p class="hero-subtitle">A Passionate [Your Profession] with a flair for Dynamic Web Experiences</p>
-            <a href="#contact" class="btn contact-btn">Let's Connect!</a>
-        </div>
-    </header>
+        // Three.js Scene Component with Custom Shader
+        const ThreeScene = ({ isDarkMode }) => {
+            const canvasRef = useRef(null);
 
-    <nav class="main-nav">
-        <ul class="container">
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+            useEffect(() => {
+                if (!window.THREE) {
+                    console.error('Three.js not loaded');
+                    document.getElementById('error-message').style.display = 'block';
+                    return;
+                }
 
-    <main>
-        <section id="about" class="container section-padding">
-            <h2>About Me</h2>
-            <div class="about-content">
-                <img src="https://via.placeholder.com/150" alt="Your Photo" class="profile-pic">
-                <p>Hello! I'm [Your Name], a [Your Profession] based in [Your City, e.g., Jamshedpur]. I specialize in creating engaging and performant web applications with a focus on user experience and dynamic interfaces. My passion lies in bringing ideas to life through clean code and creative design. I'm always eager to learn new technologies and take on challenging projects that push the boundaries of web development.</p>
-                <p>In my free time, I enjoy [Your hobbies, e.g., reading, playing guitar, exploring nature].</p>
-            </div>
-        </section>
+                const isMobile = window.innerWidth <= 768;
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimize for high-DPI displays
+                canvasRef.current.appendChild(renderer.domElement);
 
-        <section id="skills" class="container section-padding">
-            <h2>Skills</h2>
-            <div class="skills-grid">
-                <div class="skill-item" data-skill="HTML5 & CSS3">
-                    <i class="fab fa-html5"></i>
-                    <span>HTML5 & CSS3</span>
-                </div>
-                <div class="skill-item" data-skill="JavaScript (ES6+)">
-                    <i class="fab fa-js-square"></i>
-                    <span>JavaScript (ES6+)</span>
-                </div>
-                <div class="skill-item" data-skill="React.js">
-                    <i class="fab fa-react"></i>
-                    <span>React.js</span>
-                </div>
-                <div class="skill-item" data-skill="Node.js">
-                    <i class="fab fa-node-js"></i>
-                    <span>Node.js</span>
-                </div>
-                <div class="skill-item" data-skill="GSAP">
-                    <img src="https://greensock.com/gsap/images/gsap-logo-small.svg" alt="GSAP" class="skill-icon">
-                    <span>GSAP</span>
-                </div>
-                <div class="skill-item" data-skill="Git & GitHub">
-                    <i class="fab fa-git-alt"></i>
-                    <span>Git & GitHub</span>
-                </div>
-                </div>
-        </section>
+                // Custom Shader for Particles
+                const particlesCount = isMobile ? 3000 : 10000; // Reduce particles on mobile
+                const particlesGeometry = new THREE.BufferGeometry();
+                const posArray = new Float32Array(particlesCount * 3);
+                const colors = new Float32Array(particlesCount * 3);
+                for (let i = 0; i < particlesCount * 3; i += 3) {
+                    posArray[i] = (Math.random() - 0.5) * 15;
+                    posArray[i + 1] = (Math.random() - 0.5) * 15;
+                    posArray[i + 2] = (Math.random() - 0.5) * 15;
+                    colors[i] = isDarkMode ? 1 : 0.2;
+                    colors[i + 1] = isDarkMode ? 0.3 : 0.4;
+                    colors[i + 2] = isDarkMode ? 0.3 : 1;
+                }
+                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+                particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-        <section id="experience" class="container section-padding">
-            <h2>Experience</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>[Job Title] at [Company Name]</h3>
-                    <p class="duration">[Start Date] – [End Date]</p>
-                    <ul>
-                        <li>Developed and maintained responsive web applications using [technologies].</li>
-                        <li>Collaborated with a team of [number] developers on [project details].</li>
-                        <li>Implemented dynamic user interfaces with [specific techniques/libraries].</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <h3>[Job Title] at [Previous Company]</h3>
-                    <p class="duration">[Start Date] – [End Date]</p>
-                    <ul>
-                        <li>[Responsibility 1]</li>
-                        <li>[Responsibility 2]</li>
-                    </ul>
-                </div>
-                </div>
-        </section>
+                const particlesMaterial = new THREE.ShaderMaterial({
+                    uniforms: {
+                        uTime: { value: 0 },
+                        uScale: { value: isMobile ? 0.01 : 0.015 }
+                    },
+                    vertexShader: `
+                        attribute vec3 color;
+                        varying vec3 vColor;
+                        uniform float uTime;
+                        uniform float uScale;
+                        void main() {
+                            vColor = color;
+                            vec3 pos = position;
+                            pos.z += sin(pos.x + uTime) * 0.5;
+                            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                            gl_PointSize = uScale * (300.0 / -position.z);
+                        }
+                    `,
+                    fragmentShader: `
+                        varying vec3 vColor;
+                        void main() {
+                            gl_FragColor = vec4(vColor, 0.7);
+                        }
+                    `,
+                    transparent: true,
+                    blending: THREE.AdditiveBlending
+                });
+                const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+                scene.add(particlesMesh);
 
-        <section id="portfolio" class="container section-padding">
-            <h2>Portfolio</h2>
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <img src="https://via.placeholder.com/300x200" alt="Project 1">
-                    <h3>Project Name 1</h3>
-                    <p>A brief description of Project 1, highlighting technologies used (e.g., React, GSAP).</p>
-                    <a href="#" target="_blank" class="project-link">View Project</a>
+                // Interactive 3D Torus
+                const torusGeometry = new THREE.TorusGeometry(1, 0.3, 16, 100);
+                const torusMaterial = new THREE.MeshBasicMaterial({
+                    color: isDarkMode ? 0xff4d4d : 0x1e90ff,
+                    wireframe: true
+                });
+                const torus = new THREE.Mesh(torusGeometry, torusMaterial);
+                torus.position.set(2, 2, 0);
+                scene.add(torus);
+
+                camera.position.z = isMobile ? 8 : 6;
+
+                let mouseX = 0, mouseY = 0;
+                const handleMouseMove = (e) => {
+                    mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+                    mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+                };
+                const handleTouchMove = (e) => {
+                    if (e.touches.length > 0) {
+                        mouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+                        mouseY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+                    }
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                window.addEventListener('touchmove', handleTouchMove);
+
+                let time = 0;
+                const animate = () => {
+                    time += 0.02;
+                    particlesMaterial.uniforms.uTime.value = time;
+                    particlesMesh.rotation.y += 0.002;
+                    torus.rotation.x += 0.01 + mouseY * 0.05;
+                    torus.rotation.y += 0.01 + mouseX * 0.05;
+                    renderer.render(scene, camera);
+                    requestAnimationFrame(animate);
+                };
+                animate();
+
+                const handleResize = () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                };
+                window.addEventListener('resize', handleResize);
+
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                    window.removeEventListener('mousemove', handleMouseMove);
+                    window.removeEventListener('touchmove', handleTouchMove);
+                    renderer.dispose();
+                };
+            }, [isDarkMode]);
+
+            return (
+                <div ref={canvasRef} className="three-canvas">
+                    <div id="error-message" className="error-message">Failed to load 3D animation.</div>
                 </div>
-                <div class="portfolio-item">
-                    <img src="https://via.placeholder.com/300x200" alt="Project 2">
-                    <h3>Project Name 2</h3>
-                    <p>Description of Project 2, focusing on dynamic elements or complex features.</p>
-                    <a href="#" target="_blank" class="project-link">View Project</a>
+            );
+        };
+
+        // Project Card Component
+        const ProjectCard = ({ title, description, link }) => {
+            const cardRef = useRef(null);
+
+            useEffect(() => {
+                if (!window.gsap || !window.ScrollTrigger) return;
+
+                gsap.from(cardRef.current, {
+                    scrollTrigger: {
+                        trigger: cardRef.current,
+                        start: 'top 80%',
+                        toggleActions: 'play none none reset'
+                    },
+                    y: 100,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: 'power4.out'
+                });
+
+                const handleMouseMove = (e) => {
+                    const rect = cardRef.current.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    gsap.to(cardRef.current, {
+                        x: (x - rect.width / 2) * 0.1,
+                        y: (y - rect.height / 2) * 0.1,
+                        rotateX: (y - rect.height / 2) * -0.05,
+                        rotateY: (x - rect.width / 2) * 0.05,
+                        duration: 0.3
+                    });
+                };
+
+                const handleTouchMove = (e) => {
+                    if (e.touches.length > 0) {
+                        const rect = cardRef.current.getBoundingClientRect();
+                        const x = e.touches[0].clientX - rect.left;
+                        const y = e.touches[0].clientY - rect.top;
+                        gsap.to(cardRef.current, {
+                            x: (x - rect.width / 2) * 0.1,
+                            y: (y - rect.height / 2) * 0.1,
+                            rotateX: (y - rect.height / 2) * -0.05,
+                            rotateY: (x - rect.width / 2) * 0.05,
+                            duration: 0.3
+                        });
+                    }
+                };
+
+                cardRef.current.addEventListener('mousemove', handleMouseMove);
+                cardRef.current.addEventListener('touchmove', handleTouchMove);
+                cardRef.current.addEventListener('mouseleave', () => {
+                    gsap.to(cardRef.current, { x: 0, y: 0, rotateX: 0, rotateY: 0, duration: 0.3 });
+                });
+                cardRef.current.addEventListener('touchend', () => {
+                    gsap.to(cardRef.current, { x: 0, y: 0, rotateX: 0, rotateY: 0, duration: 0.3 });
+                });
+
+                return () => {
+                    cardRef.current.removeEventListener('mousemove', handleMouseMove);
+                    cardRef.current.removeEventListener('touchmove', handleTouchMove);
+                };
+            }, []);
+
+            return (
+                <div ref={cardRef} className="bg-opacity-20 bg-gray-800 dark:bg-gray-900 rounded-xl p-6 m-4 transform hover:-translate-y-2 transition-all duration-300 shadow-lg backdrop-blur-sm">
+                    <h2 className="text-xl md:text-2xl font-bold mb-2">{title}</h2>
+                    <p className="opacity-80 mb-4 text-sm md:text-base">{description}</p>
+                    <a href={link} className="inline-block bg-red-500 dark:bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 dark:hover:bg-red-600 transition-colors text-sm md:text-base">View Project</a>
                 </div>
+            );
+        };
+
+        // Contact Form Component
+        const ContactForm = () => {
+            const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+            const [errors, setErrors] = useState({});
+            const [status, setStatus] = useState('');
+
+            const validateForm = () => {
+                const newErrors = {};
+                if (!formData.name) newErrors.name = 'Name is required';
+                if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Valid email is required';
+                if (!formData.message) newErrors.message = 'Message is required';
+                return newErrors;
+            };
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                const validationErrors = validateForm();
+                if (Object.keys(validationErrors).length > 0) {
+                    setErrors(validationErrors);
+                    return;
+                }
+
+                setStatus('Sending...');
+                try {
+                    // Simulate backend API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    console.log('Form submitted:', formData);
+                    setStatus('Message sent successfully!');
+                    setFormData({ name: '', email: '', message: '' });
+                    setTimeout(() => setStatus(''), 3000);
+                } catch (error) {
+                    setStatus('Failed to send message. Try again.');
+                    setTimeout(() => setStatus(''), 3000);
+                }
+            };
+
+            const handleChange = (e) => {
+                setFormData({ ...formData, [e.target.name]: e.target.value });
+                setErrors({ ...errors, [e.target.name]: '' });
+            };
+
+            return (
+                <div className="max-w-lg mx-auto p-6 bg-opacity-20 bg-gray-800 dark:bg-gray-900 rounded-xl backdrop-blur-sm">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Get in Touch</h2>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                placeholder="Name"
+                                className="w-full p-3 bg-gray-700 dark:bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-red-500 text-sm md:text-base"
+                            />
+                            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                        </div>
+                        <div>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="Email"
+                                className="w-full p-3 bg-gray-700 dark:bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-red-500 text-sm md:text-base"
+                            />
+                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                        </div>
+                        <div>
+                            <textarea
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                                placeholder="Message"
+                                rows="5"
+                                className="w-full p-3 bg-gray-700 dark:bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-red-500 text-sm md:text-base"
+                            ></textarea>
+                            {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+                        </div>
+                        <button
+                            type="submit"
+                            className="w-full p-3 bg-red-500 dark:bg-red-500 text-white rounded-lg hover:bg-red-600 dark:hover:bg-red-600 transition-colors text-sm md:text-base"
+                        >
+                            Send Message
+                        </button>
+                        {status && <p className={`text-center mt-2 text-sm md:text-base ${status.includes('Failed') ? 'text-red-500' : 'text-green-500'}`}>{status}</p>}
+                    </form>
                 </div>
-        </section>
+            );
+        };
 
-        <section id="contact" class="container section-padding">
-            <h2>Contact Me</h2>
-            <p>I'm always open to new opportunities and collaborations. Feel free to reach out!</p>
-            <form action="YOUR_FORM_SUBMISSION_ENDPOINT" method="POST" class="contact-form">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-                <button type="submit" class="btn submit-btn">Send Message</button>
-            </form>
-            <div class="social-links">
-                <a href="https://linkedin.com/in/yourprofile" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="https://github.com/yourprofile" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="mailto:youremail@example.com"><i class="fas fa-envelope"></i> Email</a>
-            </div>
-        </section>
-    </main>
+        // Main App Component
+        const App = () => {
+            const [isDarkMode, setIsDarkMode] = useState(true);
+            const heroRef = useRef(null);
 
-    <footer>
-        <div class="container">
-            <p>&copy; <span id="current-year"></span> Your Name. All rights reserved.</p>
-        </div>
-    </footer>
+            // Mock CMS data
+            const projects = [
+                { id: 1, title: 'Project One', description: 'An innovative web application with interactive UI and seamless performance.', link: '#' },
+                { id: 2, title: 'Project Two', description: 'A dynamic e-commerce platform with advanced animations and responsive design.', link: '#' },
+                { id: 3, title: 'Project Three', description: 'A creative portfolio website with cutting-edge animations and interactions.', link: '#' }
+            ];
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+            useEffect(() => {
+                if (!window.gsap || !window.ScrollTrigger) {
+                    console.error('GSAP or ScrollTrigger not loaded');
+                    document.getElementById('error-message').style.display = 'block';
+                    return;
+                }
 
-    <script src="script.js"></script>
+                gsap.from(heroRef.current, {
+                    opacity: 0,
+                    y: 100,
+                    duration: 1.5,
+                    ease: 'power4.out'
+                });
+
+                // Staggered project card animations
+                gsap.utils.toArray('.project-card').forEach((card, i) => {
+                    gsap.from(card, {
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 80%',
+                            toggleActions: 'play none none reset'
+                        },
+                        y: 100,
+                        opacity: 0,
+                        duration: 1.2,
+                        delay: i * 0.2,
+                        ease: 'power4.out'
+                    });
+                });
+            }, []);
+
+            const toggleTheme = () => {
+                setIsDarkMode(!isDarkMode);
+                document.body.className = !isDarkMode ? 'dark' : 'light';
+            };
+
+            return (
+                <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+                    <div className="min-h-screen">
+                        <button
+                            onClick={toggleTheme}
+                            className="fixed top-4 right-4 p-2 bg-red-500 dark:bg-red-500 text-white rounded-full hover:bg-red-600 dark:hover:bg-red-600 transition-colors z-50 text-sm md:text-base"
+                        >
+                            {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+                        </button>
+                        <section className="relative h-screen flex items-center justify-center">
+                            <ThreeScene isDarkMode={isDarkMode} />
+                            <div ref={heroRef} className="text-center z-10 px-4">
+                                <h1 className="text-4xl md:text-6xl font-bold tracking-wide uppercase">Your Name</h1>
+                                <p className="text-lg md:text-2xl opacity-70 mt-4">Creative Developer & Designer</p>
+                            </div>
+                        </section>
+                        <section className="py-12 md:py-16 bg-opacity-20 bg-gray-800 dark:bg-gray-900">
+                            <div className="max-w-7xl mx-auto px-4">
+                                <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Projects</h2>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                                    {projects.map(project => (
+                                        <ProjectCard
+                                            key={project.id}
+                                            title={project.title}
+                                            description={project.description}
+                                            link={project.link}
+                                            className="project-card"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                        <section className="py-12 md:py-16 bg-opacity-20 bg-gray-800 dark:bg-gray-900">
+                            <ContactForm />
+                        </section>
+                    </div>
+                </ThemeContext.Provider>
+            );
+        };
+
+        // Render the App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
