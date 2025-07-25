@@ -1,40 +1,91 @@
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f9f9f9;
-    color: #333;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+  color: #333;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
-header {
-    background: #2b6777;
-    color: white;
-    padding: 20px;
-    text-align: center;
+header.hero {
+  height: 100vh;
+  background: url('https://picsum.photos/seed/tech/1200/800') no-repeat center center/cover;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+}
+h1 {
+  font-size: 4rem;
+  margin: 0;
+}
+p {
+  font-size: 1.5rem;
 }
 section {
-    padding: 20px;
-    margin: 10px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 60px 20px;
+  text-align: center;
 }
-h2 {
-    color: #2b6777;
+.skills ul {
+  list-style: none;
+  padding: 0;
 }
-.project {
-    margin-bottom: 15px;
+.skills li {
+  margin: 10px 0;
 }
-footer {
-    background: #2b6777;
-    color: white;
-    text-align: center;
-    padding: 10px;
+.card {
+  background: white;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
-a {
-    color: #2b6777;
-    text-decoration: none;
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
-a:hover {
-    text-decoration: underline;
+input, textarea {
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+  font-size: 1rem;
+}
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: #2b6777;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.footer {
+  background: #2b6777;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+/* Animations */
+.animate-fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+.animate-slide-in {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: all 0.8s ease;
+}
+.animate-zoom-in {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.8s ease;
+}
+.show {
+  opacity: 1 !important;
+  transform: translateY(0) translateX(0) scale(1) !important;
 }
